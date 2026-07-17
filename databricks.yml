@@ -1,0 +1,46 @@
+bundle:
+  name: weather_pipeline
+
+resources:
+  jobs:
+    gold_summeries:
+      name: gold summeries
+      trigger:
+        pause_status: PAUSED
+        periodic:
+          interval: 6
+          unit: HOURS
+      tasks:
+        - task_key: history_processing
+          notebook_task:
+            notebook_path: /Workspace/Users/devvrataman@gmail.com/weather-pipeline/weather_forcasting/historic_bronze
+            base_parameters:
+              start_date: 2000-01-01
+              end_date: 2026-07-11
+              LAT: "30.4745"
+              LON: "78.1551"
+            source: WORKSPACE
+        - task_key: daily_data_processing
+          depends_on:
+            - task_key: history_processing
+          notebook_task:
+            notebook_path: /Workspace/Users/devvrataman@gmail.com/weather-pipeline/weather_forcasting/Live_daily_stream
+            base_parameters:
+              LAT: "30.4745"
+              LON: "78.1551"
+            source: WORKSPACE
+        - task_key: silver_data_processing
+          depends_on:
+            - task_key: daily_data_processing
+          notebook_task:
+            notebook_path: /Workspace/Users/devvrataman@gmail.com/weather-pipeline/weather_forcasting/silver_transformation
+            source: WORKSPACE
+        - task_key: gold_data_summaries
+          depends_on:
+            - task_key: silver_data_processing
+          notebook_task:
+            notebook_path: /Workspace/Users/devvrataman@gmail.com/weather-pipeline/weather_forcasting/gold_climate_summaries
+            source: WORKSPACE
+      queue:
+        enabled: true
+      performance_target: PERFORMANCE_OPTIMIZED
