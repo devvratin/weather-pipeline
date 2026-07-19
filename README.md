@@ -42,26 +42,26 @@ Raw weather APIs return messy, loosely-typed, high-frequency data that isn't dir
                   (Historical Archive + Forecast)
                               │
                               ▼
-┌──────────────────────────────────────────────────────────────┐
-│  🥉 BRONZE — weather.bronze.bronze_weather                    │
-│  • Raw hourly records, explicit typed schema on write         │
-│  • Historical backfill (batch) + live merge (incremental)     │
-│  • Delta Lake MERGE INTO for upsert-based deduplication       │
+┌─────────────────────────────────────────────────────────────┐
+│  🥉 BRONZE — weather.bronze.bronze_weather                  │
+│  • Raw hourly records, explicit typed schema on write       │
+│  • Historical backfill (batch) + live merge (incremental)   │
+│  • Delta Lake MERGE INTO for upsert-based deduplication     │
 └──────────────────────────┬──────────────────────────────────┘
                             ▼
-┌──────────────────────────────────────────────────────────────┐
-│  🥈 SILVER — weather.silver.silver_weather                    │
-│  • Deduplicated on primary time key                            │
-│  • Derived fields: date, year, month, hour, season             │
-│  • Partitioned by 5-year buckets for partition pruning         │
+┌─────────────────────────────────────────────────────────────┐
+│  🥈 SILVER — weather.silver.silver_weather                  │
+│  • Deduplicated on primary time key                         │
+│  • Derived fields: date, year, month, hour, season          │
+│  • Partitioned by 5-year buckets for partition pruning      │
 └──────────────────────────┬──────────────────────────────────┘
               ┌─────────────┼──────────────┐
               ▼             ▼              ▼
 ┌──────────────────┐ ┌──────────────────┐ ┌───────────────────────┐
-│ 🥇 GOLD:          │ │ 🥇 GOLD:          │ │ 🥇 GOLD:               │
-│ Climate Summaries │ │ Logistics Surge   │ │ Sea of Clouds          │
-│ (daily/monthly/   │ │ & Safety Alerts   │ │ Predictor              │
-│  annual rollups)  │ │                   │ │ (5-factor scoring)     │
+│ 🥇 GOLD:         │ │ 🥇 GOLD:        │ │ 🥇 GOLD:              │
+│ Climate Summaries│ │ Logistics Surge  │ │ Sea of Clouds         │
+│ (daily/monthly/  │ │ & Safety Alerts  │ │ Predictor             │
+│  annual rollups) │ │                  │ │ (5-factor scoring)    │
 └──────────────────┘ └──────────────────┘ └───────────────────────┘
 ```
 
