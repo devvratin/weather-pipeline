@@ -24,7 +24,7 @@
 | `year` | String | Year of observation. |
 | `month` | String | Month of observation. |
 | `hour` | String | Hour of observation (0-23). |
-| `decade_partition` | String | Engineered partition key clustering data into 10-year groups. |
+| `five_year_partition` | String | Engineered partition key clustering data into 5-year groups. |
 
 ## Gold Layer: `gold_cloud_view_summary`
 | Column Name | Data Type | Description |
